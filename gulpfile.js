@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps');
+const imagemin = import('gulp-imagemin');
 
 function compilaSass() {
     return gulp.src('./source/styles/main.scss')
@@ -37,3 +38,11 @@ exports.sass = compilaSass;
 exports.watch = function() {
     gulp.watch('./source/styles/*.scss', {ignoreInitial: false}, gulp.series(compilaSass));
 }
+
+function compressImages() {
+    return gulp.src('./images/*.')
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist/img'));
+}
+
+exports.compressImages = compressImages;
