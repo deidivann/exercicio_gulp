@@ -1,7 +1,22 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps');
-const imagemin = import('gulp-imagemin');
+const uglify = require('gulp-uglify');
+const obfuscate = require('gulp-obfuscate');
+const imagemin = require('gulp-imagemin');
+
+function comprimeImagens() {
+    return gulp.src('.souce/images/*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('./build/images'))
+}
+
+function comprimejavaScript() {
+    return gulp.src('./source/scripts/*.js')
+    .pipe(uglify())
+    .pipe(obfuscate())
+    .pipe(gulp.dest('./build/scripts'))
+}
 
 function compilaSass() {
     return gulp.src('./source/styles/main.scss')
@@ -39,10 +54,14 @@ exports.watch = function() {
     gulp.watch('./source/styles/*.scss', {ignoreInitial: false}, gulp.series(compilaSass));
 }
 
-function compressImages() {
+exports.javascript = comprimejavaScript;
+exports.images = comprimeImagens
+
+/*function compressImages() {
     return gulp.src('./images/*.')
         .pipe(imagemin())
         .pipe(gulp.dest('dist/img'));
 }
 
 exports.compressImages = compressImages;
+/*
